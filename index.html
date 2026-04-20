@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>Acces Prive - Invitation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+:root {
+  --bg1: #fde8ee;
+  --bg2: #f5c6d0;
+  --rose: #8b1a1a;
+  --rose-soft: #d4899a;
+  --paper: #fff8fb;
+  --ink: #2c1810;
+}
+
+body {
+  min-height: 100vh;
+  font-family: 'Nunito', sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse at 15% 20%, rgba(255,255,255,0.55) 0%, transparent 45%),
+    radial-gradient(ellipse at 80% 85%, rgba(139,26,26,0.08) 0%, transparent 45%),
+    linear-gradient(145deg, var(--bg1) 0%, var(--bg2) 100%);
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+}
+
+.gate-card {
+  width: min(92vw, 460px);
+  background: linear-gradient(180deg, #fff 0%, var(--paper) 100%);
+  border: 1px solid rgba(212,137,154,0.35);
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(139,26,26,0.12);
+  padding: 1.7rem 1.2rem 1.4rem;
+}
+
+@media (min-width: 600px) {
+  .gate-card { padding: 2rem 1.8rem 1.8rem; }
+}
+
+.badge {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 0.8rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #efb9c6 0%, #d4899a 70%);
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+h1 {
+  margin: 0;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  color: var(--rose);
+  font-size: 1.75rem;
+}
+
+.subtitle {
+  margin: 0.35rem 0 1.2rem;
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: #7f4a52;
+  font-size: 1.05rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+input[type="password"] {
+  width: 100%;
+  border: 1px solid rgba(212,137,154,0.55);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+  padding: 0.8rem 0.9rem;
+  font-size: 1rem;
+}
+
+input[type="password"]:focus {
+  outline: none;
+  border-color: var(--rose);
+  box-shadow: 0 0 0 3px rgba(139,26,26,0.1);
+}
+
+button {
+  width: 100%;
+  margin-top: 0.95rem;
+  border: none;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(145deg, #8b1a1a 0%, #a52a2a 100%);
+  cursor: pointer;
+}
+
+button:hover { filter: brightness(1.05); }
+
+.feedback {
+  min-height: 1.1rem;
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #9b1f1f;
+}
+
+.note {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: #7a5a60;
+}
+</style>
+</head>
+<body>
+  <main class="gate-card" aria-labelledby="gateTitle">
+    <div class="badge" aria-hidden="true">❤</div>
+    <h1 id="gateTitle">Acces prive</h1>
+    <p class="subtitle">Entrez le mot de passe pour ouvrir l'invitation</p>
+
+    <form id="gateForm" novalidate>
+      <label for="password">Mot de passe</label>
+      <input id="password" name="password" type="password" autocomplete="off" required>
+      <button type="submit">Entrer</button>
+      <p id="feedback" class="feedback" aria-live="polite"></p>
+    </form>
+
+    <p class="note">Cette protection limite l'acces direct</p>
+  </main>
+
+<script>
+(function () {
+  'use strict';
+
+  const ACCESS_KEY = 'crema_access_granted';
+  const TARGET_PAGE = 'invitation-trattoria.html';
+  const PEPPER = 'crema-v1';
+  const EXPECTED_HASH = '7496a88f0a50f2eb6c3822b2096c834d9030860154acb5d7f945bab73b43beaf';
+
+  if (sessionStorage.getItem(ACCESS_KEY) === '1') {
+    window.location.replace(TARGET_PAGE);
+    return;
+  }
+
+  const form = document.getElementById('gateForm');
+  const input = document.getElementById('password');
+  const feedback = document.getElementById('feedback');
+
+  async function sha256(text) {
+    const encoded = new TextEncoder().encode(text);
+    const digest = await crypto.subtle.digest('SHA-256', encoded);
+    return Array.from(new Uint8Array(digest))
+      .map(function (b) { return b.toString(16).padStart(2, '0'); })
+      .join('');
+  }
+
+  form.addEventListener('submit', async function (event) {
+    event.preventDefault();
+    feedback.textContent = '';
+
+    const raw = input.value.trim();
+    if (!raw) {
+      feedback.textContent = 'Veuillez entrer le mot de passe.';
+      return;
+    }
+
+    const hash = await sha256(raw + '|' + PEPPER);
+    if (hash === EXPECTED_HASH) {
+      sessionStorage.setItem(ACCESS_KEY, '1');
+      window.location.replace(TARGET_PAGE);
+      return;
+    }
+
+    feedback.textContent = 'Mot de passe incorrect.';
+    input.select();
+  });
+})();
+</script>
+</body>
+</html>

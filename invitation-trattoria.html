@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<title>La Crémaillère de Lucile — Invitation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&amp;family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&amp;family=Caveat:wght@400;500;600;700&amp;family=Nunito:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<script>
+(function () {
+  var ACCESS_KEY = 'crema_access_granted';
+  if (sessionStorage.getItem(ACCESS_KEY) !== '1') {
+    window.location.replace('index.html');
+  }
+})();
+</script>
+<style>
+/* ===== RESET ===== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --cream: #FEFCF3;
+  --chianti: #8B1A1A;
+  --chianti-light: #A52A2A;
+  --sage: #4A7C59;
+  --gold: #C9A96E;
+  --wood: #D4A574;
+  --espresso: #2C1810;
+  --blush: #F0E0D6;
+  --parchment: #F5ECD7;
+  --pink-light: #F9C4D2;
+  --pink-bg: #FAEAEF;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background-color: var(--cream);
+  color: var(--espresso);
+  line-height: 1.7;
+  overflow-x: hidden;
+  /* Subtle parchment paper texture */
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(212,165,116,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 30%, rgba(139,26,26,0.02) 0%, transparent 50%);
+}
+
+body.envelope-active { overflow: hidden; }
+
+/* ===== ENVELOPE OVERLAY ===== */
+.envelope-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #FDE8E8 0%, #F9C4D2 40%, #F2A7B8 70%, #EDBED0 100%);
+  cursor: pointer;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.envelope-overlay.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.envelope-overlay .hint {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: #8B1A1A;
+  margin-top: 1.8rem;
+  opacity: 0.85;
+  animation: hintPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* Envelope SVG wrapper */
+.envelope-wrapper {
+  position: relative;
+  width: 280px;
+  height: 200px;
+  perspective: 1000px;
+}
+
+@media (min-width: 600px) {
+  .envelope-wrapper { width: 360px; height: 260px; }
+}
+
+.envelope-wrapper svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 8px 24px rgba(139,26,26,0.15));
+}
+
+/* Flap animation */
+.envelope-wrapper svg .envelope-flap-group {
+  transform-box: view-box;
+  transform-origin: 50% 70px;
+  transform-style: preserve-3d;
+  transition: transform 0.9s cubic-bezier(0.22, 0.8, 0.2, 1);
+}
+
+.envelope-overlay.opening svg .envelope-flap-group {
+  transform: rotateX(165deg);
+}
+
+/* Letter card — absolutely invisible before click */
+.letter-card {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform: translateX(-50%) translateY(20px);
+  width: 220px;
+  height: 160px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  z-index: 2;
+  text-align: center;
+  padding: 1.2rem 1rem;
+  font-family: 'Playfair Display', serif;
+  color: var(--chianti);
+}
+
+@media (min-width: 600px) {
+  .letter-card { width: 280px; height: 200px; padding: 1.6rem 1.4rem; }
+}
+
+.letter-card .lc-pre {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+
+.letter-card .lc-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 0.6rem;
+}
+
+@media (min-width: 600px) {
+  .letter-card .lc-title { font-size: 1.4rem; }
+}
+
+.letter-card .lc-date {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.78rem;
+  color: #666;
+  letter-spacing: 0.03em;
+}
+
+.letter-card .lc-heart {
+  font-size: 1.3rem;
+  margin-top: 0.5rem;
+  color: var(--chianti);
+}
+
+@keyframes letterSlideUp {
+  0% { transform: translateX(-50%) translateY(20px); opacity: 0; }
+  100% { transform: translateX(-50%) translateY(-30px); opacity: 1; }
+}
+
+@media (min-width: 600px) {
+  @keyframes letterSlideUp {
+    0% { transform: translateX(-50%) translateY(20px); opacity: 0; }
+    100% { transform: translateX(-50%) translateY(-50px); opacity: 1; }
+  }
+}
+
+.letter-card.visible {
+  display: block;
+  animation: letterSlideUp 0.7s 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+/* Floating rose petals on envelope screen */
+.petal {
+  position: fixed;
+  z-index: 10001;
+  pointer-events: none;
+  opacity: 0;
+  animation: petalFall linear forwards;
+}
+
+@keyframes petalFall {
+  0% { opacity: 0; transform: translateY(-40px) rotate(0deg) translateX(0); }
+  10% { opacity: 0.7; }
+  90% { opacity: 0.5; }
+  100% { opacity: 0; transform: translateY(105vh) rotate(360deg) translateX(60px); }
+}
+
+/* Hearts / confetti burst */
+.burst-particle {
+  position: fixed;
+  z-index: 10002;
+  pointer-events: none;
+  font-size: 1.2rem;
+  animation: burstAnim 1.5s ease-out forwards;
+}
+
+@keyframes burstAnim {
+  0% { opacity: 1; transform: translate(0,0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--bx), var(--by)) scale(0.4) rotate(var(--br)); }
+}
+
+/* ===== NAV DOTS ===== */
+.nav-dots {
+  position: fixed;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 500;
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+
+@media (min-width: 900px) {
+  .nav-dots { display: flex; }
+}
+
+.nav-dots a {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0.35;
+  transition: opacity 0.3s, transform 0.3s;
+  display: block;
+}
+
+.nav-dots a.active {
+  opacity: 1;
+  transform: scale(1.4);
+}
+
+/* ===== SECTIONS COMMON ===== */
+.section {
+  padding: 5rem 1.5rem;
+  max-width: 860px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+h2.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--chianti);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+/* Elegant divider */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2.5rem auto;
+  max-width: 200px;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gold);
+  opacity: 0.5;
+}
+
+.divider span {
+  color: var(--gold);
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+/* ===== HERO ===== */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(139,26,26,0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(74,124,89,0.03) 0%, transparent 50%),
+    linear-gradient(180deg, var(--cream) 0%, var(--parchment) 50%, var(--cream) 100%);
+  max-width: 100%;
+  opacity: 1;
+  transform: none;
+}
+
+#hero .hero-pre {
+  font-family: 'Caveat', cursive;
+  font-size: 1.4rem;
+  color: var(--sage);
+  margin-bottom: 0.8rem;
+  opacity: 0;
+  animation: fadeInUp 1s 0.3s ease forwards;
+}
+
+#hero .hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--chianti);
+  line-height: 1.15;
+  margin-bottom: 1.2rem;
+  opacity: 0;
+  animation: fadeInUp 1s 0.6s ease forwards;
+}
+
+@media (min-width: 600px) {
+  #hero .hero-title { font-size: 3.8rem; }
+}
+
+#hero .hero-date {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+  color: var(--espresso);
+  opacity: 0;
+  animation: fadeInUp 1s 0.9s ease forwards;
+}
+
+#hero .hero-date span {
+  margin: 0 0.5rem;
+  color: var(--gold);
+}
+
+.scroll-arrow {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  animation: fadeInUp 1s 1.3s ease forwards;
+}
+
+.scroll-arrow svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--gold);
+  animation: arrowBounce 2s ease-in-out infinite;
+}
+
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes arrowBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+/* ===== EVENT DETAILS ===== */
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 600px) {
+  .details-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.detail-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.8rem 1.2rem;
+  text-align: center;
+  box-shadow: 0 2px 12px rgba(44,24,16,0.06);
+  border: 1px solid rgba(201,169,110,0.15);
+}
+
+.detail-card svg {
+  width: 36px;
+  height: 36px;
+  stroke: var(--chianti);
+  fill: none;
+  stroke-width: 1.5;
+  margin-bottom: 0.8rem;
+}
+
+.detail-card .dc-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--gold);
+  margin-bottom: 0.3rem;
+}
+
+.detail-card .dc-value {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--espresso);
+}
+
+.access-box {
+  background: linear-gradient(135deg, #FAEAEF 0%, #F5D5DE 100%);
+  color: var(--espresso);
+  border-radius: 14px;
+  padding: 1.8rem 2rem;
+  text-align: center;
+  margin-top: 1.5rem;
+  border: 1.5px solid rgba(139,26,26,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle rose pattern */
+.access-box::before {
+  content: '🌹';
+  position: absolute;
+  top: 10px; right: 14px;
+  font-size: 1.4rem;
+  opacity: 0.15;
+}
+
+.access-box::after {
+  content: '🌹';
+  position: absolute;
+  bottom: 10px; left: 14px;
+  font-size: 1.4rem;
+  opacity: 0.15;
+  transform: scaleX(-1);
+}
+
+.access-box .ab-title {
+  font-family: 'Caveat', cursive;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--chianti);
+  margin-bottom: 1rem;
+}
+
+.access-items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 1.5rem;
+}
+
+.access-item {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  display: flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+
+.access-item strong {
+  color: var(--chianti);
+  font-weight: 600;
+}
+
+/* ===== COUNTDOWN ===== */
+#countdown {
+  background: linear-gradient(135deg, #FAEAEF 0%, #F9D5DE 50%, #F5C6D0 100%);
+  max-width: 100%;
+  padding: 4rem 1.5rem;
+  color: var(--espresso);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Vichy subtle overlay on countdown */
+#countdown::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(90deg, rgba(139,26,26,0.04) 50%, transparent 50%),
+    linear-gradient(rgba(139,26,26,0.04) 50%, transparent 50%);
+  background-size: 24px 24px;
+  pointer-events: none;
+}
+
+#countdown .section-title { color: var(--chianti); }
+#countdown .section-subtitle { color: var(--chianti); opacity: 0.6; }
+
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.8rem;
+  max-width: 520px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.cd-unit {
+  text-align: center;
+  background: rgba(255,255,255,0.7);
+  border-radius: 14px;
+  padding: 1.2rem 0.5rem;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 3px 12px rgba(139,26,26,0.06);
+  border: 1px solid rgba(139,26,26,0.08);
+}
+
+.cd-number {
+  font-family: 'Caveat', cursive;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: var(--chianti);
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+
+@media (min-width: 600px) {
+  .cd-number { font-size: 3.6rem; }
+}
+
+.cd-label {
+  font-family: 'Caveat', cursive;
+  font-size: 0.85rem;
+  color: var(--chianti);
+  opacity: 0.6;
+}
+
+/* ===== RSVP ===== */
+.rsvp-form {
+  max-width: 520px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--gold);
+  margin-bottom: 0.35rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(201,169,110,0.3);
+  border-radius: 8px;
+  background: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.95rem;
+  color: var(--espresso);
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.form-group textarea { resize: vertical; min-height: 80px; }
+
+/* Attendance toggle */
+.toggle-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.toggle-group label {
+  flex: 1;
+  text-align: center;
+  padding: 0.7rem 0.5rem;
+  border: 1px solid rgba(201,169,110,0.3);
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-style: normal;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+  background: #fff;
+}
+
+.toggle-group input[type="radio"] { display: none; }
+
+.toggle-group input[type="radio"]:checked + label {
+  background: var(--chianti);
+  color: #fff;
+  border-color: var(--chianti);
+}
+
+.rsvp-submit {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 0.9rem 2.5rem;
+  background: var(--chianti);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  align-self: center;
+}
+
+.rsvp-submit:hover { background: #A02020; transform: translateY(-2px); }
+
+.rsvp-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.rsvp-feedback {
+  min-height: 1.4rem;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 0.4rem;
+  color: #8B1A1A;
+}
+
+.rsvp-feedback.success {
+  color: #2f6b44;
+}
+
+/* ===== MAP ===== */
+.map-container {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(44,24,16,0.08);
+  margin-bottom: 1rem;
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 350px;
+  border: none;
+}
+
+.map-link {
+  text-align: center;
+}
+
+.map-link a {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--chianti);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ===== PLAYLIST ===== */
+.playlist-container {
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.playlist-container iframe {
+  width: 100%;
+  height: 380px;
+  border: none;
+  border-radius: 12px;
+}
+
+/* ===== WISHLIST ===== */
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 600px) {
+  .wishlist-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.wish-card {
+  border: 1.5px dashed rgba(201,169,110,0.45);
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  background: #fff;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.wish-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(44,24,16,0.08);
+}
+
+.wish-emoji {
+  font-size: 2rem;
+  margin-bottom: 0.6rem;
+}
+
+.wish-label {
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.9rem;
+  color: var(--espresso);
+  font-weight: 500;
+}
+
+/* ===== FOOTER ===== */
+#footer {
+  text-align: center;
+  padding: 3rem 1.5rem 2rem;
+  background: var(--blush);
+  max-width: 100%;
+}
+
+#footer .footer-bye {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--chianti);
+  margin-bottom: 0.5rem;
+}
+
+#footer .footer-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--gold);
+}
+
+/* ===== TRATTORIA TOUCHES ===== */
+
+/* Vichy checkered border strips — rose tint */
+.vichy-strip {
+  height: 12px;
+  background-color: #FEF0F3;
+  background-image:
+    linear-gradient(90deg, rgba(212,137,154,0.2) 50%, transparent 50%),
+    linear-gradient(rgba(212,137,154,0.2) 50%, transparent 50%);
+  background-size: 14px 14px;
+}
+
+/* Rose emoji divider between sections */
+.rose-divider {
+  text-align: center;
+  padding: 1.5rem 0;
+  font-size: 0.9rem;
+  opacity: 0.3;
+  letter-spacing: 12px;
+}
+
+/* Handwritten accent style */
+.handwritten {
+  font-family: 'Caveat', cursive;
+}
+
+/* Section subtitle with Caveat feel */
+.section-subtitle.trattoria {
+  font-family: 'Caveat', cursive;
+  font-style: normal;
+  font-size: 1.3rem;
+  color: var(--sage);
+}
+
+/* Detail cards — rose parchment + top colored bar */
+.detail-card.trattoria {
+  background: linear-gradient(180deg, #fff 0%, #FEF5F7 100%);
+  border: 1px solid rgba(139,26,26,0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.detail-card.trattoria::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--chianti), #D4899A, var(--sage));
+}
+
+.detail-card.trattoria svg {
+  stroke: var(--chianti);
+}
+
+.detail-card.trattoria .dc-label {
+  font-family: 'Caveat', cursive;
+  font-style: normal;
+  font-size: 1.05rem;
+  color: var(--sage);
+}
+
+/* Access box trattoria — rose tones */
+.access-box.trattoria {
+  background: linear-gradient(135deg, #FAEAEF 0%, #F2D5DC 100%);
+}
+
+.access-box.trattoria .code-big {
+  font-family: 'Caveat', cursive;
+  font-size: 1.8rem;
+  line-height: 1;
+  letter-spacing: 4px;
+  color: var(--chianti);
+}
+
+/* RSVP — rose parchment card feel */
+.rsvp-card {
+  background: linear-gradient(135deg, #FEF5F7 0%, #FFF 50%, #FEF0F3 100%);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 4px 20px rgba(139,26,26,0.06);
+  border: 1px solid rgba(212,137,154,0.15);
+  max-width: 520px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Paper fold corner */
+.rsvp-card::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 0; height: 0;
+  border-style: solid;
+  border-width: 0 36px 36px 0;
+  border-color: transparent var(--cream) transparent transparent;
+}
+
+/* Small rose accent */
+.rsvp-card::before {
+  content: '🌹';
+  position: absolute;
+  bottom: 12px; right: 16px;
+  font-size: 1.2rem;
+  opacity: 0.12;
+}
+
+.rsvp-card .form-group label {
+  font-family: 'Caveat', cursive;
+  font-style: normal;
+  font-size: 1.15rem;
+  color: var(--espresso);
+}
+
+.rsvp-card .rsvp-submit {
+  background: linear-gradient(135deg, var(--chianti) 0%, var(--chianti-light) 100%);
+  font-family: 'Caveat', cursive;
+  font-size: 1.3rem;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(139,26,26,0.2);
+}
+
+/* Wish cards — rose dashed */
+.wish-card.trattoria {
+  border-color: #D4899A;
+  border-style: dashed;
+  background: linear-gradient(180deg, #fff 0%, #FEF5F7 100%);
+}
+
+.wish-card.trattoria .wish-label {
+  font-family: 'Caveat', cursive;
+  font-size: 1.1rem;
+}
+
+.wish-card.trattoria:hover {
+  transform: translateY(-4px) rotate(-1deg);
+  border-color: var(--chianti);
+  background: linear-gradient(180deg, #FEF5F7 0%, #FAEAEF 100%);
+}
+
+/* Wine glass SVG divider */
+.wine-divider {
+  display: block;
+  margin: 0 auto;
+  opacity: 0.5;
+}
+
+/* Map with rose border */
+.map-container.trattoria {
+  border: 3px solid #D4899A;
+}
+
+/* Footer trattoria — warm rose */
+#footer.trattoria {
+  background: linear-gradient(180deg, #F5D5DE 0%, #FAEAEF 100%);
+  color: var(--espresso);
+  position: relative;
+  overflow: hidden;
+}
+
+#footer.trattoria::before {
+  content: '🌿 🍷 🌹 🍷 🌿';
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  opacity: 0.2;
+  letter-spacing: 8px;
+  white-space: nowrap;
+}
+
+#footer.trattoria .footer-bye {
+  font-family: 'Caveat', cursive;
+  color: var(--chianti);
+  font-size: 2rem;
+}
+
+#footer.trattoria .footer-sub {
+  color: var(--chianti);
+  opacity: 0.5;
+}
+</style>
+</head>
+<body class="envelope-active">
+
+<!-- ===== ENVELOPE OVERLAY ===== -->
+<div class="envelope-overlay" id="envelopeOverlay">
+  <div class="envelope-wrapper" id="envelopeWrapper">
+    <!-- Letter card — display: none, invisible before click -->
+    <div class="letter-card" id="letterCard">
+      <div class="lc-pre">Vous êtes invités à</div>
+      <div class="lc-title">La Crémaillère<br>de Lucile</div>
+      <div class="lc-date">Samedi 16 Mai 2026</div>
+      <div class="lc-heart">&hearts;</div>
+    </div>
+    <!-- Single solid SVG envelope -->
+    <svg viewBox="0 0 360 260" xmlns="http://www.w3.org/2000/svg">
+      <!-- Envelope body -->
+      <rect x="10" y="70" width="340" height="180" rx="12" fill="#FAF0F0" stroke="#D4899A" stroke-width="1.5"/>
+      <!-- Inner fold lines -->
+      <line x1="10" y1="70" x2="180" y2="170" stroke="#E8B4C0" stroke-width="1" opacity="0.5"/>
+      <line x1="350" y1="70" x2="180" y2="170" stroke="#E8B4C0" stroke-width="1" opacity="0.5"/>
+      <!-- Flap + seal -->
+      <g class="envelope-flap-group">
+        <polygon class="envelope-flap" points="10,70 180,170 350,70" fill="#F2D5DC" stroke="#D4899A" stroke-width="1.5" stroke-linejoin="round"/>
+        <line x1="10" y1="70" x2="350" y2="70" stroke="#D4899A" stroke-width="1.2" opacity="0.8"/>
+        <circle cx="180" cy="132" r="16" fill="#D4899A" opacity="0.92"/>
+        <text x="180" y="138" text-anchor="middle" font-size="16" fill="#fff">&hearts;</text>
+      </g>
+    </svg>
+  </div>
+  <p class="hint">Appuyez pour ouvrir</p>
+</div>
+
+<!-- ===== NAV DOTS ===== -->
+<nav class="nav-dots" id="navDots">
+  <a href="#hero" data-section="hero"></a>
+  <a href="#details" data-section="details"></a>
+  <a href="#countdown" data-section="countdown"></a>
+  <a href="#rsvp" data-section="rsvp"></a>
+  <a href="#map" data-section="map"></a>
+  <a href="#playlist" data-section="playlist"></a>
+  <a href="#wishlist" data-section="wishlist"></a>
+</nav>
+
+<!-- Vichy top strip -->
+<div class="vichy-strip"></div>
+
+<!-- ===== HERO ===== -->
+<section id="hero" class="section" style="position:relative;">
+  <!-- Rose decorations -->
+  <svg class="hero-rose hero-rose-left" width="80" height="120" viewBox="0 0 80 120" fill="none" style="position:absolute;top:15%;left:3%;opacity:0.1;pointer-events:none;">
+    <path d="M40 10 Q30 20 25 35 Q20 50 30 60 Q35 55 40 45 Q45 55 50 60 Q60 50 55 35 Q50 20 40 10Z" fill="#8B1A1A"/>
+    <path d="M40 60 Q38 80 36 100 Q35 110 38 115" stroke="#4A7C59" stroke-width="1.5" fill="none"/>
+    <ellipse cx="28" cy="90" rx="12" ry="5" transform="rotate(-20 28 90)" fill="#4A7C59" opacity="0.6"/>
+    <ellipse cx="52" cy="85" rx="10" ry="4" transform="rotate(25 52 85)" fill="#4A7C59" opacity="0.5"/>
+  </svg>
+  <svg class="hero-rose hero-rose-right" width="80" height="120" viewBox="0 0 80 120" fill="none" style="position:absolute;top:20%;right:3%;opacity:0.1;pointer-events:none;transform:scaleX(-1);">
+    <path d="M40 10 Q30 20 25 35 Q20 50 30 60 Q35 55 40 45 Q45 55 50 60 Q60 50 55 35 Q50 20 40 10Z" fill="#D4899A"/>
+    <path d="M40 60 Q38 80 36 100 Q35 110 38 115" stroke="#4A7C59" stroke-width="1.5" fill="none"/>
+    <ellipse cx="28" cy="90" rx="12" ry="5" transform="rotate(-20 28 90)" fill="#4A7C59" opacity="0.6"/>
+    <ellipse cx="52" cy="85" rx="10" ry="4" transform="rotate(25 52 85)" fill="#4A7C59" opacity="0.5"/>
+  </svg>
+
+  <p class="hero-pre">~ Vous êtes invités à ~</p>
+  <h1 class="hero-title">La Crémaillère<br>de Lucile</h1>
+
+  <!-- Small decorative wine & rose row -->
+  <div style="display:flex;align-items:center;gap:12px;margin:1rem 0 0.5rem;opacity:0.35;">
+    <svg width="40" height="2" viewBox="0 0 40 2"><line x1="0" y1="1" x2="40" y2="1" stroke="var(--chianti)" stroke-width="1"/></svg>
+    <span style="font-size:0.9rem;">🌹</span>
+    <span style="font-size:0.85rem;">🍷</span>
+    <span style="font-size:0.9rem;">🌹</span>
+    <svg width="40" height="2" viewBox="0 0 40 2"><line x1="0" y1="1" x2="40" y2="1" stroke="var(--chianti)" stroke-width="1"/></svg>
+  </div>
+
+  <p class="hero-date">Samedi 16 Mai 2026 <span>&middot;</span> À partir de 12h30</p>
+  <a href="#details" class="scroll-arrow" aria-label="Défiler vers le bas">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+  </a>
+</section>
+
+<!-- ===== EVENT DETAILS ===== -->
+<section id="details" class="section">
+  <h2 class="section-title">Les Détails</h2>
+  <p class="section-subtitle trattoria">~ Tout ce qu'il faut savoir ~</p>
+
+  <div class="details-grid">
+    <div class="detail-card trattoria">
+      <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <div class="dc-label">Date</div>
+      <div class="dc-value">Samedi 16 Mai 2026</div>
+    </div>
+    <div class="detail-card trattoria">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <div class="dc-label">Heure</div>
+      <div class="dc-value">À partir de 12h30</div>
+    </div>
+    <div class="detail-card trattoria">
+      <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <div class="dc-label">Adresse</div>
+      <div class="dc-value">4 rue de Morsang<br>Savigny-sur-Orge</div>
+    </div>
+  </div>
+
+  <div class="access-box trattoria">
+    <div class="ab-title">~ Informations d'accès ~</div>
+    <div class="access-items">
+      <div class="access-item"><strong>Porte :</strong> de droite (dans le hall)</div>
+      <div class="access-item"><strong>Code :</strong> <span class="code-big">3698</span></div>
+      <div class="access-item"><strong>Interphone :</strong> PERRARD</div>
+    </div>
+  </div>
+</section>
+
+<div class="rose-divider">🌹 🍷 🌹</div>
+
+<!-- ===== COUNTDOWN ===== -->
+<section id="countdown" class="section">
+  <h2 class="section-title">Compte à rebours</h2>
+  <p class="section-subtitle trattoria" style="color: rgba(255,255,255,0.6);">~ Le jour J approche... ~</p>
+  <div class="countdown-grid">
+    <div class="cd-unit">
+      <div class="cd-number" id="cdDays">--</div>
+      <div class="cd-label">Jours</div>
+    </div>
+    <div class="cd-unit">
+      <div class="cd-number" id="cdHours">--</div>
+      <div class="cd-label">Heures</div>
+    </div>
+    <div class="cd-unit">
+      <div class="cd-number" id="cdMins">--</div>
+      <div class="cd-label">Minutes</div>
+    </div>
+    <div class="cd-unit">
+      <div class="cd-number" id="cdSecs">--</div>
+      <div class="cd-label">Secondes</div>
+    </div>
+  </div>
+</section>
+
+<div class="rose-divider">🌿 🌹 🌿</div>
+
+<!-- ===== RSVP ===== -->
+<section id="rsvp" class="section">
+  <h2 class="section-title">Confirmez votre présence</h2>
+  <p class="section-subtitle trattoria">~ On a hâte de vous voir ! ~</p>
+
+  <div class="rsvp-card">
+  <form class="rsvp-form" id="rsvpForm" action="https://formsubmit.co/ajax/lucile.prd@outlook.fr" method="POST" data-sheets-webhook="">
+    <!-- Honeypot spam protection -->
+    <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_subject" value="RSVP - Crémaillère de Lucile">
+    <input type="hidden" name="_template" value="table">
+
+    <div class="form-group">
+      <label for="name">Votre nom</label>
+      <input type="text" id="name" name="name" placeholder="Prénom et nom" required>
+    </div>
+
+    <div class="form-group">
+      <label>Votre réponse</label>
+      <div class="toggle-group">
+        <input type="radio" id="attending-yes" name="attending" value="Présent(e)" required>
+        <label for="attending-yes">Je serai là !</label>
+        <input type="radio" id="attending-no" name="attending" value="Absent(e)">
+        <label for="attending-no">Je ne pourrai pas</label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="guests">Nombre d'invités (vous compris)</label>
+      <select id="guests" name="guests">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5+">5+</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="dietary">Restrictions alimentaires</label>
+      <input type="text" id="dietary" name="dietary" placeholder="Allergies, végétarien...">
+    </div>
+
+    <div class="form-group">
+      <label for="message">Un petit mot pour Lucile</label>
+      <textarea id="message" name="message" placeholder="Votre message..."></textarea>
+    </div>
+
+    <button type="submit" class="rsvp-submit">Envoyer ma réponse</button>
+    <p id="rsvpFeedback" class="rsvp-feedback" aria-live="polite"></p>
+  </form>
+  </div>
+</section>
+
+<div class="rose-divider">🍷 🌹 🍷</div>
+
+<!-- ===== MAP ===== -->
+<section id="map" class="section">
+  <h2 class="section-title">Comment venir</h2>
+  <p class="section-subtitle trattoria">~ 4 rue de Morsang, Savigny-sur-Orge ~</p>
+
+  <div class="map-container trattoria">
+    <iframe src="https://www.google.com/maps?q=4+rue+de+Morsang,+Savigny-sur-Orge&amp;output=embed" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+  <p class="map-link">
+    <a href="https://www.google.com/maps/search/?api=1&amp;query=4+rue+de+Morsang,+Savigny-sur-Orge" target="_blank" rel="noopener">Ouvrir la carte en grand &rarr;</a>
+  </p>
+</section>
+
+<div class="rose-divider">🌹 🌿 🌹</div>
+
+<!-- ===== PLAYLIST ===== -->
+<section id="playlist" class="section">
+  <h2 class="section-title">La Playlist</h2>
+  <p class="section-subtitle trattoria">~ Pour se mettre dans l'ambiance ~</p>
+
+  <div class="playlist-container">
+    <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/5hWtZxAw2gDRIKiR9UTCZC?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+  </div>
+</section>
+
+<div class="rose-divider">🍷 🌹 🍷</div>
+
+<!-- ===== WISHLIST ===== -->
+<section id="wishlist" class="section">
+  <h2 class="section-title">Liste de cadeaux</h2>
+  <p class="section-subtitle trattoria">~ Quelques idées si le cœur vous en dit ~</p>
+
+  <div class="wishlist-grid">
+    <div class="wish-card trattoria">
+      <div class="wish-emoji">🌿</div>
+      <div class="wish-label">Plantes d'intérieur</div>
+    </div>
+    <div class="wish-card trattoria">
+      <div class="wish-emoji">🍷</div>
+      <div class="wish-label">Belles bouteilles</div>
+    </div>
+    <div class="wish-card trattoria">
+      <div class="wish-emoji">🕯️</div>
+      <div class="wish-label">Objets déco</div>
+    </div>
+    <div class="wish-card trattoria">
+      <div class="wish-emoji">📚</div>
+      <div class="wish-label">Livres de cuisine</div>
+    </div>
+    <div class="wish-card trattoria">
+      <div class="wish-emoji">🍳</div>
+      <div class="wish-label">Ustensiles de cuisine</div>
+    </div>
+    <div class="wish-card trattoria">
+      <div class="wish-emoji">🎁</div>
+      <div class="wish-label">Carte cadeau</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<!-- Vichy bottom strip -->
+<div class="vichy-strip"></div>
+
+<footer id="footer" class="trattoria">
+  <div class="footer-bye">À très bientôt ! &hearts;</div>
+  <div class="footer-sub">La Crémaillère de Lucile &middot; 16 Mai 2026</div>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+
+  /* ===== FLOATING ROSE PETALS ===== */
+  const overlay = document.getElementById('envelopeOverlay');
+  const petalColors = ['#F2A7B8', '#F9C4D2', '#E8899A', '#D4899A', '#EDBED0', '#C97B8B'];
+
+  function createPetal() {
+    if (overlay.classList.contains('hidden')) return;
+    const petal = document.createElement('div');
+    petal.className = 'petal';
+    const size = 8 + Math.random() * 14;
+    const left = Math.random() * 100;
+    const dur = 6 + Math.random() * 6;
+    const delay = Math.random() * 0.5;
+    const color = petalColors[Math.floor(Math.random() * petalColors.length)];
+    petal.style.cssText = `
+      left: ${left}vw;
+      top: -20px;
+      width: ${size}px;
+      height: ${size * 0.7}px;
+      background: ${color};
+      border-radius: 50% 0 50% 50%;
+      animation-duration: ${dur}s;
+      animation-delay: ${delay}s;
+    `;
+    overlay.appendChild(petal);
+    setTimeout(() => petal.remove(), (dur + delay) * 1000 + 200);
+  }
+
+  const petalInterval = setInterval(() => {
+    createPetal();
+    if (Math.random() > 0.5) createPetal();
+  }, 400);
+
+  /* ===== ENVELOPE CLICK ===== */
+  overlay.addEventListener('click', function openEnvelope() {
+    overlay.removeEventListener('click', openEnvelope);
+    clearInterval(petalInterval);
+
+    // Animate flap
+    overlay.classList.add('opening');
+
+    // Show letter card after short delay
+    const card = document.getElementById('letterCard');
+    setTimeout(() => {
+      card.classList.add('visible'); // sets display:block + animation
+    }, 300);
+
+    // Spawn hearts / confetti
+    setTimeout(() => {
+      spawnBurst();
+    }, 600);
+
+    // Fade out overlay after ~2s
+    setTimeout(() => {
+      overlay.classList.add('hidden');
+      document.body.classList.remove('envelope-active');
+      // Clean up petals
+      overlay.querySelectorAll('.petal').forEach(p => p.remove());
+    }, 2200);
+  });
+
+  function spawnBurst() {
+    const cx = window.innerWidth / 2;
+    const cy = window.innerHeight / 2 - 40;
+    const symbols = ['\u2665', '\u2764', '\u2661', '\u2728', '\u2727', '\u2022'];
+    const colors = ['#8B1A1A', '#C9A96E', '#D4899A', '#5A7C65', '#F2A7B8'];
+
+    for (let i = 0; i < 24; i++) {
+      const el = document.createElement('div');
+      el.className = 'burst-particle';
+      el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      const angle = (Math.PI * 2 / 24) * i + (Math.random() - 0.5) * 0.4;
+      const dist = 80 + Math.random() * 140;
+      const bx = Math.cos(angle) * dist;
+      const by = Math.sin(angle) * dist - 40;
+      const br = (Math.random() - 0.5) * 360;
+      el.style.cssText = `
+        left: ${cx}px;
+        top: ${cy}px;
+        color: ${colors[Math.floor(Math.random() * colors.length)]};
+        font-size: ${0.9 + Math.random() * 0.8}rem;
+        --bx: ${bx}px;
+        --by: ${by}px;
+        --br: ${br}deg;
+      `;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1600);
+    }
+  }
+
+  /* ===== COUNTDOWN ===== */
+  const target = new Date('2026-05-16T12:30:00+02:00').getTime();
+  const cdDays = document.getElementById('cdDays');
+  const cdHours = document.getElementById('cdHours');
+  const cdMins = document.getElementById('cdMins');
+  const cdSecs = document.getElementById('cdSecs');
+
+  function updateCountdown() {
+    const now = Date.now();
+    const diff = Math.max(0, target - now);
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    cdDays.textContent = String(d).padStart(2, '0');
+    cdHours.textContent = String(h).padStart(2, '0');
+    cdMins.textContent = String(m).padStart(2, '0');
+    cdSecs.textContent = String(s).padStart(2, '0');
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  /* ===== SCROLL REVEAL (IntersectionObserver) ===== */
+  const sections = document.querySelectorAll('.section');
+  const revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12 });
+
+  sections.forEach(function(sec) {
+    if (sec.id !== 'hero') {
+      revealObserver.observe(sec);
+    }
+  });
+
+  /* ===== NAV DOTS ACTIVE STATE ===== */
+  const dots = document.querySelectorAll('.nav-dots a');
+  const dotObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        dots.forEach(function(d) { d.classList.remove('active'); });
+        const active = document.querySelector('.nav-dots a[data-section="' + entry.target.id + '"]');
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+
+  sections.forEach(function(sec) { dotObserver.observe(sec); });
+
+  /* ===== RSVP SUBMIT ===== */
+  const rsvpForm = document.getElementById('rsvpForm');
+  if (rsvpForm) {
+    const attendingYes = document.getElementById('attending-yes');
+    const attendingNo = document.getElementById('attending-no');
+    const guestsSelect = document.getElementById('guests');
+    const dietaryInput = document.getElementById('dietary');
+    const submitBtn = rsvpForm.querySelector('.rsvp-submit');
+    const feedbackEl = document.getElementById('rsvpFeedback');
+    const sheetsWebhookUrl = (rsvpForm.dataset.sheetsWebhook || '').trim();
+
+    function setFeedback(message, isSuccess) {
+      feedbackEl.textContent = message;
+      feedbackEl.classList.toggle('success', Boolean(isSuccess));
+    }
+
+    function syncRsvpFields() {
+      const isAbsent = attendingNo.checked;
+      guestsSelect.disabled = isAbsent;
+      dietaryInput.disabled = isAbsent;
+
+      if (isAbsent) {
+        guestsSelect.dataset.previous = guestsSelect.value;
+        guestsSelect.value = '1';
+        dietaryInput.value = '';
+      } else if (guestsSelect.dataset.previous && guestsSelect.value === '1') {
+        guestsSelect.value = guestsSelect.dataset.previous;
+      }
+    }
+
+    function formDataToObject(fd) {
+      const out = {};
+      fd.forEach(function(value, key) {
+        out[key] = value;
+      });
+      return out;
+    }
+
+    attendingYes.addEventListener('change', syncRsvpFields);
+    attendingNo.addEventListener('change', syncRsvpFields);
+
+    rsvpForm.addEventListener('submit', async function(event) {
+      event.preventDefault();
+      setFeedback('', false);
+
+      if (attendingYes.checked && !guestsSelect.value) {
+        setFeedback('Merci d\'indiquer le nombre d\'invites.', false);
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Envoi en cours...';
+
+      try {
+        const formData = new FormData(rsvpForm);
+
+        if (attendingNo.checked) {
+          formData.set('guests', '0');
+          formData.set('dietary', 'Non concerne (absence)');
+        }
+
+        const response = await fetch(rsvpForm.action, {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (!response.ok) {
+          throw new Error('RSVP submit failed');
+        }
+
+        if (sheetsWebhookUrl) {
+          const payload = formDataToObject(formData);
+          payload.sent_at = new Date().toISOString();
+          payload.source = 'github-pages-invitation';
+
+          // no-cors avoids browser-side CORS blocks for Apps Script web apps.
+          await fetch(sheetsWebhookUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+          });
+        }
+
+        setFeedback('Merci ! Votre reponse a bien ete enregistree.', true);
+        rsvpForm.reset();
+        syncRsvpFields();
+      } catch (err) {
+        setFeedback('Oups, impossible d\'envoyer pour le moment. Reessayez dans quelques instants.', false);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Envoyer ma réponse';
+      }
+    });
+  }
+
+})();
+</script>
+</body>
+</html>
