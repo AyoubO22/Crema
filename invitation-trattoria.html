@@ -724,6 +724,18 @@ h2.section-title {
   transition: transform 0.3s, box-shadow 0.3s;
 }
 
+.wish-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.wish-card-link:focus-visible {
+  outline: 2px solid var(--chianti);
+  outline-offset: 4px;
+  border-radius: 12px;
+}
+
 .wish-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 18px rgba(44,24,16,0.08);
@@ -1184,10 +1196,12 @@ h2.section-title {
       <div class="wish-emoji">🪔</div>
       <div class="wish-label">Senteur (diffuseur, spray, bougie,...)</div>
     </div>
-    <div class="wish-card trattoria">
-      <div class="wish-emoji">🧚🏼‍♀️</div>
-      <div class="wish-label">Cotisation pour ma cocotte Le Creuset</div>
-    </div>
+    <a class="wish-card-link" href="https://www.lecreuset.fr/fr_FR/p/cocotte-coeur-en-fonte-emaillee-avec-bouton-coeur/CI1401b.html" target="_blank" rel="noopener noreferrer" aria-label="Voir la cocotte coeur Le Creuset">
+      <div class="wish-card trattoria">
+        <div class="wish-emoji">🧚🏼‍♀️</div>
+        <div class="wish-label">Cotisation pour ma cocotte Le Creuset</div>
+      </div>
+    </a>
     <div class="wish-card trattoria">
       <div class="wish-emoji">🫧</div>
       <div class="wish-label">Objets déco</div>
